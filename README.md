@@ -33,8 +33,8 @@ impl<C: HttpClient + 'static> Foo<C> {
 #[tokio::main]
 async fn main() {
     let foo = Foo::new(
-        // We put the client in a wrapper
-        // a workaround to rust's orphan rule.
+        // We need to put the client in a wrapper
+        // as a workaround to rust's orphan rule.
         ReqwestClientWrapper::new(reqwest::Client::new())
     );
 
