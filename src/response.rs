@@ -34,7 +34,7 @@ impl Response {
 }
 
 #[async_trait::async_trait]
-pub trait HttpResponse {
+pub trait HttpResponse: Send + Sync {
     async fn bytes(self: Box<Self>) -> anyhow::Result<Bytes>;
 
     #[cfg(feature = "stream")]
