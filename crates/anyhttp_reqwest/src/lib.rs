@@ -8,12 +8,7 @@ use url::Url;
 
 #[async_trait::async_trait]
 impl HttpClient for ReqwestClientWrapper {
-    type Response = ReqwestResponseWrapper;
-
-    async fn execute(
-        &self,
-        request: Request<Vec<u8>>,
-    ) -> Result<Response<Self::Response>, anyhow::Error> {
+    async fn execute(&self, request: Request<Vec<u8>>) -> Result<Response, anyhow::Error> {
         Ok(Response::new(ReqwestResponseWrapper::new(
             self.inner.execute(convert_request(request)?).await?,
         )))
@@ -22,7 +17,7 @@ impl HttpClient for ReqwestClientWrapper {
 
 #[async_trait::async_trait]
 impl HttpResponse for ReqwestResponseWrapper {
-    async fn bytes(self) -> anyhow::Result<Bytes> {
+    async fn bytes(self: Box<Self>) -> anyhow::Result<Bytes> {
         reqwest::Response::bytes(self.inner)
             .await
             .map_err(anyhow::Error::new)
@@ -30,7 +25,7 @@ impl HttpResponse for ReqwestResponseWrapper {
 
     #[cfg(feature = "stream")]
     fn bytes_stream(
-        self,
+        self: Box<Self>,
     ) -> std::pin::Pin<Box<dyn futures::Stream<Item = anyhow::Result<Bytes>> + Send>> {
         use futures::StreamExt;
 

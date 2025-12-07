@@ -1,14 +1,15 @@
 use bytes::Bytes;
 use url::Url;
 
-#[derive(Clone)]
-pub struct Response<I: HttpResponse> {
-    inner: I,
+pub struct Response {
+    inner: Box<dyn HttpResponse>,
 }
 
-impl<I: HttpResponse> Response<I> {
-    pub fn new(inner: I) -> Self {
-        Self { inner }
+impl Response {
+    pub fn new(inner: impl HttpResponse + 'static) -> Self {
+        Self {
+            inner: Box::new(inner),
+        }
     }
 
     pub async fn bytes(self) -> anyhow::Result<Bytes> {
@@ -29,11 +30,11 @@ impl<I: HttpResponse> Response<I> {
 
 #[async_trait::async_trait]
 pub trait HttpResponse {
-    async fn bytes(self) -> anyhow::Result<Bytes>;
+    async fn bytes(self: Box<Self>) -> anyhow::Result<Bytes>;
 
     #[cfg(feature = "stream")]
     fn bytes_stream(
-        self,
+        self: Box<Self>,
     ) -> std::pin::Pin<Box<dyn futures::Stream<Item = anyhow::Result<Bytes>> + Send>>;
 
     fn url(&self) -> &Url;
