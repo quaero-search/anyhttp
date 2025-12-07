@@ -24,11 +24,25 @@ dependencies = [
 ]
 
 [[package]]
-name = "anyhttp_reqwest"
+name = "anyhttp"
 version = "0.0.0"
+source = "git+https://github.com/quaero-search/anyhttp#e2c9c91c95a24041a8d27fd9651792bb21818dd5"
 dependencies = [
  "anyhow",
- "anyhttp",
+ "async-trait",
+ "bytes",
+ "futures",
+ "http",
+ "url",
+]
+
+[[package]]
+name = "anyhttp_reqwest"
+version = "0.0.0"
+source = "git+https://github.com/quaero-search/anyhttp#e2c9c91c95a24041a8d27fd9651792bb21818dd5"
+dependencies = [
+ "anyhow",
+ "anyhttp 0.0.0 (git+https://github.com/quaero-search/anyhttp)",
  "async-trait",
  "bytes",
  "http",
