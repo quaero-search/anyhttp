@@ -32,6 +32,8 @@ impl HttpResponse for ReqwestResponseWrapper {
     fn bytes_stream(
         self,
     ) -> std::pin::Pin<Box<dyn futures::Stream<Item = anyhow::Result<Bytes>> + Send>> {
+        use futures::StreamExt;
+
         Box::pin(
             reqwest::Response::bytes_stream(self.inner).map(|res| res.map_err(anyhow::Error::new)),
         )
