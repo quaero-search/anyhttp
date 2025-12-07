@@ -1,10 +1,3 @@
-# anyhttp
-
-This crate provides a way to make asynchronous http requests without locking consumers into using a specific http library.
-
-## Example Usage
-
-```rs
 use anyhttp::HttpClient;
 use anyhttp_reqwest::ReqwestClientWrapper;
 use http::Request;
@@ -32,13 +25,8 @@ impl<C: HttpClient + 'static> Foo<C> {
 
 #[tokio::main]
 async fn main() {
-    let foo = Foo::new(
-        // We put the client in a wrapper
-        // a workaround to rust's orphan rule.
-        ReqwestClientWrapper::new(reqwest::Client::new())
-    );
+    let foo = Foo::new(ReqwestClientWrapper::new(reqwest::Client::new()));
 
     let data = foo.fetch_products().await;
     println!("{:#?}", data)
 }
-```

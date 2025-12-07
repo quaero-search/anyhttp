@@ -1,20 +1,16 @@
-#[allow(hidden_glob_reexports)]
+use http::Request;
+
 mod response;
-pub use response::Response;
-
-mod adapters;
-pub use adapters::*;
-
-pub use http::{Response as RawResponse, *};
+pub use response::{HttpResponse, Response};
 
 #[async_trait::async_trait]
-pub trait AnyHttpClient {
+pub trait HttpClient: Send + Sync {
     /// The underlying Error type for the client.
-    type Error: std::error::Error + Send + Sync;
+    type Response: HttpResponse;
 
-    /// Executes the specified request using the client.
+    /// Sends the specified request using the client.
     async fn execute(
         &self,
         request: Request<Vec<u8>>,
-    ) -> std::result::Result<Response<Vec<u8>>, Self::Error>;
+    ) -> std::result::Result<Response<Self::Response>, anyhow::Error>;
 }

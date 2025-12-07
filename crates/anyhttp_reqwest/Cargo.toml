@@ -1,0 +1,23 @@
+[package]
+name = "anyhttp_reqwest"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+anyhttp = { git = "https://github.com/quaero-search/anyhttp" }
+# Local development.
+# anyhttp = { path = "../.." }
+
+http = "1.3.1"
+reqwest = { version = "0.12.24", features = ["stream"] }
+async-trait = "0.1.89"
+url = "2.5.7"
+bytes = "1.11.0"
+anyhow = "1.0.100"
+
+# Stream feature.
+futures = { version = "0.3.31", optional = true }
+
+[features]
+stream = ["dep:futures"]
+default_features = [ "stream" ]
