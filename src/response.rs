@@ -1,4 +1,5 @@
 use bytes::Bytes;
+use http::StatusCode;
 use url::Url;
 
 pub struct Response {
@@ -26,6 +27,10 @@ impl Response {
     pub fn url(&self) -> &Url {
         self.inner.url()
     }
+
+    pub fn status(&self) -> StatusCode {
+        self.inner.status()
+    }
 }
 
 #[async_trait::async_trait]
@@ -38,4 +43,6 @@ pub trait HttpResponse {
     ) -> std::pin::Pin<Box<dyn futures::Stream<Item = anyhow::Result<Bytes>> + Send>>;
 
     fn url(&self) -> &Url;
+
+    fn status(&self) -> StatusCode;
 }

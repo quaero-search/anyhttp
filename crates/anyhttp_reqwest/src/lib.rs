@@ -3,7 +3,7 @@ use std::ops::{Deref, DerefMut};
 use anyhttp::{HttpClient, HttpResponse, Response};
 
 use bytes::Bytes;
-use http::Request;
+use http::{Request, StatusCode};
 use url::Url;
 
 #[async_trait::async_trait]
@@ -36,6 +36,10 @@ impl HttpResponse for ReqwestResponseWrapper {
 
     fn url(&self) -> &Url {
         reqwest::Response::url(&self.inner)
+    }
+
+    fn status(&self) -> StatusCode {
+        reqwest::Response::status(&self.inner)
     }
 }
 
