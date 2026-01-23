@@ -9,7 +9,6 @@ async-trait = "0.1.89"
 url = "2.5.7"
 bytes = "1.11.0"
 anyhow = "1.0.100"
-derivative = "2.2.0"
 
 # Optional dependencies
 futures = { version = "0.3.31", optional = true }
