@@ -2,6 +2,11 @@
 name = "anyhttp"
 version = "0.0.0"
 edition = "2024"
+description = "Async HTTP requests without locking into a specific HTTP library"
+license = "MIT"
+repository = "https://github.com/quaero-search/anyhttp"
+keywords = ["http", "client", "async", "reqwest"]
+categories = ["network-programming", "web-programming::http-client"]
 
 [dependencies]
 http = "1.3.1"
