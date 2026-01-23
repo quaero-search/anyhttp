@@ -1,5 +1,4 @@
 use anyhttp::HttpClient;
-use anyhttp_reqwest::ReqwestClientWrapper;
 use http::Request;
 
 struct Foo<C: HttpClient + 'static> {
@@ -25,11 +24,7 @@ impl<C: HttpClient + 'static> Foo<C> {
 
 #[tokio::main]
 async fn main() {
-    let foo = Foo::new(
-        // We need to put the client in a wrapper
-        // as a workaround to rust's orphan rule.
-        ReqwestClientWrapper::new(reqwest::Client::new()),
-    );
+    let foo = Foo::new(reqwest::Client::new());
 
     let data = foo.fetch_products().await;
     println!("{:#?}", data)
