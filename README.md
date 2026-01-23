@@ -43,3 +43,36 @@ async fn main() {
 - `reqwest` - Implements `HttpClient` for `reqwest::Client`
 - `mock` - Provides a mock HTTP client for testing
 - `stream` - Enables streaming response bodies
+
+## Testing with Mocks
+
+The `mock` feature provides a `MockHttpClient` for testing:
+
+```rs
+use anyhttp::mock::{MockHttpClient, MockResponse};
+use anyhttp::HttpClient;
+use http::{Request, StatusCode};
+
+#[tokio::test]
+async fn test_api_call() {
+    let client = MockHttpClient::new()
+        .with_response(MockResponse::new(StatusCode::OK).body(b"hello world"));
+
+    let request = Request::get("https://example.com").body(vec![]).unwrap();
+    let response = client.execute(request).await.unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+    assert_eq!(response.bytes().await.unwrap().as_ref(), b"hello world");
+}
+```
+
+You can also queue multiple responses and simulate errors:
+
+```rs
+let client = MockHttpClient::new()
+    .with_response(MockResponse::new(StatusCode::OK).body(b"first"))
+    .with_error("connection failed")
+    .with_response(MockResponse::new(StatusCode::CREATED).body(b"third"));
+
+// Responses are returned in FIFO order
+```

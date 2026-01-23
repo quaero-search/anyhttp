@@ -24,5 +24,9 @@ reqwest = ["dep:reqwest"]
 mock = []
 
 [[example]]
-name = "example"
+name = "reqwest_example"
 required-features = ["reqwest"]
+
+[[example]]
+name = "mock_example"
+required-features = ["mock"]
