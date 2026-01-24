@@ -21,7 +21,7 @@ pub use response::{HttpResponse, Response};
 pub mod reqwest;
 
 /// Mock HTTP client for testing.
-#[cfg(feature = "mock")]
+#[cfg(feature = "test-support")]
 pub mod mock;
 
 /// A trait for HTTP clients that can execute requests.
